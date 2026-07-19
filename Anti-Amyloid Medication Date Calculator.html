@@ -1,0 +1,80 @@
+<html>
+
+<body>
+
+<h1>Anti-Amyloid Medication Infusion Dates</h1>
+
+<form action="JavaScript:calculateInfusionDates()">
+ <label for="antiAmyloidMedication">Anti-amyloid medication:</label>
+ <select name="antiAmyloidMedication" id="antiAmyloidMedication">
+  <option value="lecanemab">Leqembi (lecanemab)</option>
+  <option value="donanemab">Kisunla (donanemab)</option>
+ </select><br><br>
+ <label for="firstInfusionDate">First infusion date:</label>
+ <input type="text" id="firstInfusionDate" name="firstInfusionDate"><br><br>
+ <input type="submit" value="Submit">
+</form>
+
+<p id="allInfusionDates"></p>
+
+</body>
+
+<script type="text/javascript">
+ function calculateInfusionDates()
+ {
+  var d = new Date(document.getElementById("firstInfusionDate").value);
+  document.getElementById("allInfusionDates").innerHTML = "Infusion # 1: " +
+   (d.getMonth() + 1 < 10 ? '0' : '') + (d.getMonth() + 1) + "/" +
+   (d.getDate() < 10 ? '0' : '') + d.getDate() + "/" +
+   ('' + d.getFullYear()).slice(-2) + "<br>";
+  if (document.getElementById("antiAmyloidMedication").value == "lecanemab")
+  {
+   for (i = 2; i < 27; i++)
+   {
+    d.setDate(d.getDate() + 14);
+    var d2 = new Date(d);
+    d2.setDate(d2.getDate() - 7);
+    document.getElementById("allInfusionDates").innerHTML +=
+     "Infusion # " + i + " : " +
+     (d.getMonth() + 1 < 10 ? '0' : '') + (d.getMonth() + 1) + "/" +
+     (d.getDate() < 10 ? '0' : '') + d.getDate() + "/" +
+     ('' + d.getFullYear()).slice(-2);
+    if (i == 3 || i == 5 || i == 7 || i == 14 || i == 26)
+    {
+     document.getElementById("allInfusionDates").innerHTML +=
+      " * MRI on or around: " +
+      (d2.getMonth() + 1 < 10 ? '0' : '') + (d2.getMonth() + 1) + "/" +
+      (d2.getDate() < 10 ? '0' : '') + d2.getDate() + "/" +
+      ('' + d2.getFullYear()).slice(-2);
+    }
+    document.getElementById("allInfusionDates").innerHTML += "<br>";
+   }
+  }
+  else if (document.getElementById("antiAmyloidMedication").value == "donanemab")
+  {
+   for (i = 2; i < 14; i++)
+   {
+    d.setDate(d.getDate() + 28);
+    var d2 = new Date(d);
+    d2.setDate(d2.getDate() - 7);
+    document.getElementById("allInfusionDates").innerHTML +=
+     "Infusion # " + i + " : " +
+     (d.getMonth() + 1 < 10 ? '0' : '') + (d.getMonth() + 1) + "/" +
+     (d.getDate() < 10 ? '0' : '') + d.getDate() + "/" +
+     ('' + d.getFullYear()).slice(-2);
+    if (i == 2 || i == 3 || i == 4 || i == 7)
+    {
+     document.getElementById("allInfusionDates").innerHTML +=
+      " * MRI on or around: " +
+      (d2.getMonth() + 1 < 10 ? '0' : '') + (d2.getMonth() + 1) + "/" +
+      (d2.getDate() < 10 ? '0' : '') + d2.getDate() + "/" +
+      ('' + d2.getFullYear()).slice(-2);
+    }  
+    document.getElementById("allInfusionDates").innerHTML += "<br>";
+   }
+  }
+
+ }
+</script>
+
+</html>
