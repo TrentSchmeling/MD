@@ -6,12 +6,15 @@
 
 <form action="JavaScript:calculateInfusionDates()">
  <label for="antiAmyloidMedication">Anti-amyloid medication:</label>
- <select name="antiAmyloidMedication" id="antiAmyloidMedication">
+ <select name="antiAmyloidMedication" id="antiAmyloidMedication" onchange="infusionNumberMax()">
   <option value="lecanemab">Leqembi (lecanemab)</option>
   <option value="donanemab">Kisunla (donanemab)</option>
- </select><br><br>
- <label for="firstInfusionDate">First infusion date:</label>
- <input type="text" id="firstInfusionDate" name="firstInfusionDate"><br><br>
+ </select>
+ <br><br>
+ <label for="firstInfusion">Infusion #, date:</label>
+ <input type="number" id="infusionNumber" value="1" min="1" style="width: 60px">
+ <input type="date" id="firstInfusionDate" name="firstInfusionDate">
+ <br><br>
  <input type="submit" value="Submit">
 </form>
 
@@ -20,16 +23,20 @@
 </body>
 
 <script type="text/javascript">
+ document.getElementById("infusionNumber").setAttribute("max", "26");
+ document.getElementById("firstInfusionDate").valueAsDate = Date.now();
+
  function calculateInfusionDates()
  {
   var d = new Date(document.getElementById("firstInfusionDate").value);
-  document.getElementById("allInfusionDates").innerHTML = "Infusion # 1: " +
+  document.getElementById("allInfusionDates").innerHTML = "Infusion # " +
+   document.getElementById("infusionNumber").value + ": " +
    (d.getMonth() + 1 < 10 ? '0' : '') + (d.getMonth() + 1) + "/" +
-   (d.getDate() < 10 ? '0' : '') + d.getDate() + "/" +
+   (d.getDate() + 1< 10 ? '0' : '') + (d.getDate() + 1) + "/" +
    ('' + d.getFullYear()).slice(-2) + "<br>";
   if (document.getElementById("antiAmyloidMedication").value == "lecanemab")
   {
-   for (i = 2; i < 27; i++)
+   for (i = document.getElementById("infusionNumber").valueAsNumber + 1; i < 27; i++)
    {
     d.setDate(d.getDate() + 14);
     var d2 = new Date(d);
@@ -37,14 +44,14 @@
     document.getElementById("allInfusionDates").innerHTML +=
      "Infusion # " + i + " : " +
      (d.getMonth() + 1 < 10 ? '0' : '') + (d.getMonth() + 1) + "/" +
-     (d.getDate() < 10 ? '0' : '') + d.getDate() + "/" +
+     (d.getDate() + 1 < 10 ? '0' : '') + (d.getDate() + 1) + "/" +
      ('' + d.getFullYear()).slice(-2);
     if (i == 3 || i == 5 || i == 7 || i == 14 || i == 26)
     {
      document.getElementById("allInfusionDates").innerHTML +=
       " * MRI on or around: " +
       (d2.getMonth() + 1 < 10 ? '0' : '') + (d2.getMonth() + 1) + "/" +
-      (d2.getDate() < 10 ? '0' : '') + d2.getDate() + "/" +
+      (d2.getDate() + 1 < 10 ? '0' : '') + (d2.getDate() + 1) + "/" +
       ('' + d2.getFullYear()).slice(-2);
     }
     document.getElementById("allInfusionDates").innerHTML += "<br>";
@@ -52,7 +59,7 @@
   }
   else if (document.getElementById("antiAmyloidMedication").value == "donanemab")
   {
-   for (i = 2; i < 14; i++)
+   for (i = document.getElementById("infusionNumber").valueAsNumber + 1; i < 14; i++)
    {
     d.setDate(d.getDate() + 28);
     var d2 = new Date(d);
@@ -60,21 +67,33 @@
     document.getElementById("allInfusionDates").innerHTML +=
      "Infusion # " + i + " : " +
      (d.getMonth() + 1 < 10 ? '0' : '') + (d.getMonth() + 1) + "/" +
-     (d.getDate() < 10 ? '0' : '') + d.getDate() + "/" +
+     (d.getDate() + 1 < 10 ? '0' : '') + (d.getDate() + 1) + "/" +
      ('' + d.getFullYear()).slice(-2);
     if (i == 2 || i == 3 || i == 4 || i == 7)
     {
      document.getElementById("allInfusionDates").innerHTML +=
       " * MRI on or around: " +
       (d2.getMonth() + 1 < 10 ? '0' : '') + (d2.getMonth() + 1) + "/" +
-      (d2.getDate() < 10 ? '0' : '') + d2.getDate() + "/" +
+      (d2.getDate() + 1 < 10 ? '0' : '') + (d2.getDate() + 1) + "/" +
       ('' + d2.getFullYear()).slice(-2);
-    }  
+    }
     document.getElementById("allInfusionDates").innerHTML += "<br>";
    }
   }
-
  }
+
+ function infusionNumberMax()
+ {
+  if (document.getElementById("antiAmyloidMedication").value == "lecanemab")
+  {
+   document.getElementById("infusionNumber").setAttribute("max", "26");
+  }
+  else if (document.getElementById("antiAmyloidMedication").value == "donanemab")
+  {
+   document.getElementById("infusionNumber").setAttribute("max", "13");
+  }
+ }
+
 </script>
 
 </html>
